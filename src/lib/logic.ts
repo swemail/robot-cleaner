@@ -1,8 +1,7 @@
 import { Command, Direction, Point } from "../types";
 import { range } from "./utils";
 
-// const SIZE = 100_000;
-
+// Uses a range to create an array with points for each step
 export const getCleanedPointsPerCommand = (start: Point, command: Command) => {
   switch (command.direction) {
     case Direction.east:
@@ -32,26 +31,33 @@ export const getCleanedPointsPerCommand = (start: Point, command: Command) => {
   }
 };
 
-export const getAllCleanedPoints = (
+// Gets all the points visisted for each command
+// and makes the last point for each command the new starting point for the next command.
+//
+// Uses a string representation of each point to use a plain Object as holder of uniqe points.
+const getAllCleanedPoints = (
   start: Point,
-  commands: Array<Command>,
-  visited: Record<string, boolean> = {}
+  commands: Array<Command>
 ): Record<string, boolean> => {
-  if (commands.length === 0) {
-    return visited;
-  }
-  const [command, ...rest] = commands;
-  const visistedPoints = getCleanedPointsPerCommand(start, command);
+  const [result] = commands.reduce(
+    (acc, command) => {
+      const [v, s] = acc;
+      const visistedPoints = getCleanedPointsPerCommand(s, command);
 
-  const visistedTotal = visistedPoints.reduce((acc, point) => {
-    acc[`${point.x}:${point.y}`] = true; // any value would do, only need keys
-    return acc;
-  }, visited);
+      const visistedTotal = visistedPoints.reduce((points, point) => {
+        points[`${point.x}:${point.y}`] = true; // any value would do, only need keys
+        return points;
+      }, v);
 
-  const currentPoint =
-    visistedPoints.length > 0 ? visistedPoints.slice(-1)[0] : start;
+      const currentPoint =
+        visistedPoints.length > 0 ? visistedPoints.slice(-1)[0] : start;
 
-  return getAllCleanedPoints(currentPoint, rest, visistedTotal);
+      return [visistedTotal, currentPoint] as [Record<string, boolean>, Point];
+    },
+    [{}, start] as [Record<string, boolean>, Point]
+  );
+
+  return result;
 };
 
 export const getNumberOfCleanedPoints = (

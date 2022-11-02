@@ -178,20 +178,48 @@ describe("logic", () => {
       ).toEqual(21);
     });
 
-    // it("should handle larve case", () => {
-    //   const test = [];
-    //   for (let index = 0; index < 10_000; index++) {
-    //     test[index] = index;
-    //   }
-    //   expect(
-    //     getNumberOfCleanedPoints(
-    //       { x: 0, y: 0 },
-    //       test.map((x) => ({
-    //         direction: x % 2 === 0 ? Direction.east : Direction.south,
-    //         steps: 10,
-    //       }))
-    //     )
-    //   ).toEqual(21);
-    // });
+    it("should cover a full grid", () => {
+      expect(
+        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+          { direction: Direction.south, steps: 4 },
+          { direction: Direction.east, steps: 1 },
+          { direction: Direction.north, steps: 4 },
+          { direction: Direction.east, steps: 1 },
+          { direction: Direction.south, steps: 4 },
+          { direction: Direction.east, steps: 1 },
+          { direction: Direction.north, steps: 4 },
+          { direction: Direction.east, steps: 1 },
+          { direction: Direction.south, steps: 4 },
+        ])
+      ).toEqual(25);
+    });
+
+    it("should handle covering same points", () => {
+      expect(
+        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+          { direction: Direction.south, steps: 4 },
+          { direction: Direction.north, steps: 4 },
+          { direction: Direction.south, steps: 4 },
+          { direction: Direction.north, steps: 4 },
+          { direction: Direction.south, steps: 4 },
+        ])
+      ).toEqual(5);
+    });
+
+    it("should handle up to 10 000 commands", () => {
+      const test = [];
+      for (let index = 0; index < 10_000; index++) {
+        test[index] = index;
+      }
+      expect(
+        getNumberOfCleanedPoints(
+          { x: 0, y: 0 },
+          test.map((x) => ({
+            direction: x % 2 === 0 ? Direction.east : Direction.south,
+            steps: 10,
+          }))
+        )
+      ).toEqual(expect.any(Number));
+    });
   });
 });
