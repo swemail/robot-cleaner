@@ -8,4 +8,4 @@ COPY ./src ./src
 
 RUN yarn
 
-CMD npm run dev
+CMD yarn dev

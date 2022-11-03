@@ -5,11 +5,11 @@
   "author": "Emil Rondahl <emil@29k.org>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./build/index.js",
-    "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
-    "build:watch": "tsc --watch",
+    "start": "yarn build && node ./build/index.js",
+    "dev": "nodemon -L -e ts --exec \"yarn start\"",
     "build": "tsc",
-    "test:jest": "TZ=UTC jest"
+    "test:jest": "TZ=UTC jest",
+    "test": "yarn build && yarn test:jest"
   },
   "devDependencies": {
     "@types/jest": "^29.2.1",
