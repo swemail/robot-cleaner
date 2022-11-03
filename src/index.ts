@@ -1,6 +1,10 @@
 import Koa from "koa";
 import Router from "@koa/router";
 import bodyParser from "koa-bodyparser";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 import robotRouter from "./api/robot";
 
 const app = new Koa();
@@ -10,6 +14,6 @@ router.use("/tibber-developer-test", robotRouter.routes());
 
 app.use(bodyParser()).use(router.routes()).use(router.allowedMethods());
 
-app.listen(5000);
+app.listen(process.env.PORT);
 
-console.log("app listening on port", 5000);
+console.log("app listening on port", process.env.PORT);
