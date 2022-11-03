@@ -20,6 +20,10 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
+afterAll(() => {
+  mockServer.close();
+});
+
 describe("api - robot", () => {
   describe("POST", () => {
     it("should return successfull execution result", async () => {
