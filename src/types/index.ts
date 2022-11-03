@@ -18,7 +18,11 @@ export type Input = {
 };
 
 export type Result = {
+  id: number;
+  timestamp: string;
   commands: number;
   result: number;
   duration: number;
 };
+
+export type ResultInput = Omit<Result, "id">;
