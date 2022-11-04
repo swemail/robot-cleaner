@@ -15,5 +15,6 @@
       "skipLibCheck": true
     },
     "compileOnSave": true,
-    "include": ["src", "types"]
+    "include": ["src", "types"],
+    "exclude": ["**/__mocks__/*"]
   }
