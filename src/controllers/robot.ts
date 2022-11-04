@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { getNumberOfCleanedPoints } from "../lib/logic";
+import { getNumberOfCleanedPoints } from "../lib/executions";
 import { saveExecution } from "../models/robot";
 import { Input } from "../types";
 

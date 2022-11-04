@@ -1,7 +1,10 @@
 import { Direction } from "../types";
-import { getCleanedPointsPerCommand, getNumberOfCleanedPoints } from "./logic";
+import {
+  getCleanedPointsPerCommand,
+  getNumberOfCleanedPoints,
+} from "./executions";
 
-describe("logic", () => {
+describe("executions", () => {
   describe("getCleanedPointsPerCommand", () => {
     it("should get expected point for east", () => {
       expect(

@@ -1,9 +1,9 @@
-import { getNumberOfCleanedPoints } from "../lib/logic";
+import { getNumberOfCleanedPoints } from "../lib/executions";
 import { saveExecution } from "../models/robot";
 import { Direction } from "../types";
 import { executePath } from "./robot";
 
-jest.mock("../lib/logic");
+jest.mock("../lib/executions");
 jest.mock("../models/robot");
 
 const mockSaveExecution = saveExecution as jest.Mock;
