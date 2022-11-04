@@ -1,11 +1,14 @@
 import { Pool } from "pg";
+import config from "../../lib/config";
+
+const { DB_HOST, DB_USER, DB_NAME, DB_PASSWORD, DB_PORT } = config;
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "5432"),
+  host: DB_HOST,
+  user: DB_USER,
+  database: DB_NAME,
+  password: DB_PASSWORD,
+  port: DB_PORT,
 });
 
 pool.on("error", (err) => {
