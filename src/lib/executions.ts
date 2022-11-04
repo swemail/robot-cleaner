@@ -2,7 +2,7 @@ import { Command, Direction, Point } from "../types";
 import { range } from "./utils";
 
 // Uses a range to create an array with points for each step
-export const getCleanedPointsPerCommand = (start: Point, command: Command) => {
+export const getVisitedPointsPerCommand = (start: Point, command: Command) => {
   switch (command.direction) {
     case Direction.east:
       return range(start.x, command.steps + 1).map((x) => ({ x, y: start.y }));
@@ -32,27 +32,32 @@ export const getCleanedPointsPerCommand = (start: Point, command: Command) => {
 };
 
 // Gets all the points visisted for each command
-// and makes the last point for each command the new starting point for the next command.
+// and make the last point for each command the new starting point for the next command.
 //
-// Uses a string representation of each point to use a plain Object as holder of uniqe points.
-const getAllCleanedPoints = (
+// Uses a string representation of each point as key in an plain Object as holder of uniqe points.
+const getAllVisitedPoints = (
   start: Point,
   commands: Array<Command>
 ): Record<string, boolean> => {
   const [result] = commands.reduce(
     (acc, command) => {
-      const [v, s] = acc;
-      const visistedPoints = getCleanedPointsPerCommand(s, command);
+      const [visistedTotal, nextStart] = acc;
+      const visistedForCommand = getVisitedPointsPerCommand(nextStart, command);
 
-      const visistedTotal = visistedPoints.reduce((points, point) => {
+      const nextVisistedTotal = visistedForCommand.reduce((points, point) => {
         points[`${point.x}:${point.y}`] = true; // any value would do, only need keys
         return points;
-      }, v);
+      }, visistedTotal);
 
       const currentPoint =
-        visistedPoints.length > 0 ? visistedPoints.slice(-1)[0] : start;
+        visistedForCommand.length > 0
+          ? visistedForCommand[visistedForCommand.length - 1]
+          : start;
 
-      return [visistedTotal, currentPoint] as [Record<string, boolean>, Point];
+      return [nextVisistedTotal, currentPoint] as [
+        Record<string, boolean>,
+        Point
+      ];
     },
     [{}, start] as [Record<string, boolean>, Point]
   );
@@ -60,10 +65,10 @@ const getAllCleanedPoints = (
   return result;
 };
 
-export const getNumberOfCleanedPoints = (
+export const getNumberOfVisitedPoints = (
   start: Point,
   commands: Array<Command>
 ) => {
-  const allPoints = getAllCleanedPoints(start, commands);
+  const allPoints = getAllVisitedPoints(start, commands);
   return Object.keys(allPoints).length;
 };

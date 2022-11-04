@@ -1,14 +1,14 @@
 import { Direction } from "../types";
 import {
-  getCleanedPointsPerCommand,
-  getNumberOfCleanedPoints,
+  getVisitedPointsPerCommand,
+  getNumberOfVisitedPoints,
 } from "./executions";
 
 describe("executions", () => {
   describe("getCleanedPointsPerCommand", () => {
     it("should get expected point for east", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: 0 },
           { direction: Direction.east, steps: 2 }
         )
@@ -21,7 +21,7 @@ describe("executions", () => {
 
     it("should get expected point for east with negative start", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: -10, y: 0 },
           { direction: Direction.east, steps: 2 }
         )
@@ -34,7 +34,7 @@ describe("executions", () => {
 
     it("should get expected point for east when crossing zero", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: -1, y: 0 },
           { direction: Direction.east, steps: 2 }
         )
@@ -47,7 +47,7 @@ describe("executions", () => {
 
     it("should get expected point for south", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: 0 },
           { direction: Direction.south, steps: 2 }
         )
@@ -60,7 +60,7 @@ describe("executions", () => {
 
     it("should get expected point for south with negative start", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: -10 },
           { direction: Direction.south, steps: 2 }
         )
@@ -73,7 +73,7 @@ describe("executions", () => {
 
     it("should get expected point for south when crossing zero", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: -1 },
           { direction: Direction.south, steps: 2 }
         )
@@ -86,7 +86,7 @@ describe("executions", () => {
 
     it("should get expected point for west", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 10, y: 0 },
           { direction: Direction.west, steps: 2 }
         )
@@ -99,7 +99,7 @@ describe("executions", () => {
 
     it("should get expected point for west with negative start", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: -10, y: 0 },
           { direction: Direction.west, steps: 2 }
         )
@@ -112,7 +112,7 @@ describe("executions", () => {
 
     it("should get expected point for west when crossing zero", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 1, y: 0 },
           { direction: Direction.west, steps: 2 }
         )
@@ -125,7 +125,7 @@ describe("executions", () => {
 
     it("should get expected point for north", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: 10 },
           { direction: Direction.north, steps: 2 }
         )
@@ -138,7 +138,7 @@ describe("executions", () => {
 
     it("should get expected point for north with negative start", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: -10 },
           { direction: Direction.north, steps: 2 }
         )
@@ -151,7 +151,7 @@ describe("executions", () => {
 
     it("should get expected point for north when crossing zero", () => {
       expect(
-        getCleanedPointsPerCommand(
+        getVisitedPointsPerCommand(
           { x: 0, y: 1 },
           { direction: Direction.north, steps: 2 }
         )
@@ -163,10 +163,10 @@ describe("executions", () => {
     });
   });
 
-  describe("getNumberOfCleanedPoints", () => {
+  describe("getNumberOfVisitedPoints", () => {
     it("should handle simple case of one command", () => {
       expect(
-        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+        getNumberOfVisitedPoints({ x: 0, y: 0 }, [
           { direction: Direction.east, steps: 10 },
         ])
       ).toEqual(11);
@@ -174,7 +174,7 @@ describe("executions", () => {
 
     it("should handle two commands", () => {
       expect(
-        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+        getNumberOfVisitedPoints({ x: 0, y: 0 }, [
           { direction: Direction.east, steps: 10 },
           { direction: Direction.south, steps: 10 },
         ])
@@ -183,7 +183,7 @@ describe("executions", () => {
 
     it("should cover a full grid", () => {
       expect(
-        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+        getNumberOfVisitedPoints({ x: 0, y: 0 }, [
           { direction: Direction.south, steps: 4 },
           { direction: Direction.east, steps: 1 },
           { direction: Direction.north, steps: 4 },
@@ -199,7 +199,7 @@ describe("executions", () => {
 
     it("should handle covering same points", () => {
       expect(
-        getNumberOfCleanedPoints({ x: 0, y: 0 }, [
+        getNumberOfVisitedPoints({ x: 0, y: 0 }, [
           { direction: Direction.south, steps: 4 },
           { direction: Direction.north, steps: 4 },
           { direction: Direction.south, steps: 4 },
@@ -215,7 +215,7 @@ describe("executions", () => {
         test[index] = index;
       }
       expect(
-        getNumberOfCleanedPoints(
+        getNumberOfVisitedPoints(
           { x: 0, y: 0 },
           test.map((x) => ({
             direction: x % 2 === 0 ? Direction.east : Direction.south,

@@ -1,4 +1,4 @@
-import { getNumberOfCleanedPoints } from "../lib/executions";
+import { getNumberOfVisitedPoints } from "../lib/executions";
 import { saveExecution } from "../models/robot";
 import { Direction } from "../types";
 import { executePath } from "./robot";
@@ -7,7 +7,7 @@ jest.mock("../lib/executions");
 jest.mock("../models/robot");
 
 const mockSaveExecution = saveExecution as jest.Mock;
-const mockGetNumberOfCleanedPoints = getNumberOfCleanedPoints as jest.Mock;
+const mockGetNumberOfVisitedPoints = getNumberOfVisitedPoints as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -16,7 +16,7 @@ beforeEach(() => {
 describe("controllers - robot", () => {
   describe("executePath", () => {
     it("should execute result and store result", async () => {
-      mockGetNumberOfCleanedPoints.mockReturnValueOnce(10);
+      mockGetNumberOfVisitedPoints.mockReturnValueOnce(10);
       mockSaveExecution.mockImplementationOnce((input) =>
         Promise.resolve({
           id: 1,
@@ -37,8 +37,8 @@ describe("controllers - robot", () => {
         timestamp: expect.any(String),
         result: 10,
       });
-      expect(mockGetNumberOfCleanedPoints).toHaveBeenCalledTimes(1);
-      expect(mockGetNumberOfCleanedPoints).toHaveBeenCalledWith(
+      expect(mockGetNumberOfVisitedPoints).toHaveBeenCalledTimes(1);
+      expect(mockGetNumberOfVisitedPoints).toHaveBeenCalledWith(
         input.start,
         input.commands
       );

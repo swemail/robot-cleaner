@@ -1,1 +1,1 @@
-export const getNumberOfCleanedPoints = jest.fn();
+export const getNumberOfVisitedPoints = jest.fn();

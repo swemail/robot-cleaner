@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { getNumberOfCleanedPoints } from "../lib/executions";
+import { getNumberOfVisitedPoints } from "../lib/executions";
 import { saveExecution } from "../models/robot";
 import { Input } from "../types";
 
@@ -13,7 +13,7 @@ export const executePath = async ({ start, commands }: Input) => {
   const timestamp = dayjs().utc().local().format(DATE_FORMAT);
 
   const startExecutionTime = performance.now();
-  const result = getNumberOfCleanedPoints(start, commands);
+  const result = getNumberOfVisitedPoints(start, commands);
   const duration = parseFloat(
     ((performance.now() - startExecutionTime) / 1000).toFixed(6)
   ); //in seconds
