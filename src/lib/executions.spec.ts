@@ -5,7 +5,7 @@ import {
 } from "./executions";
 
 describe("executions", () => {
-  describe("getCleanedPointsPerCommand", () => {
+  describe("getVisitedPointsPerCommand", () => {
     it("should get expected point for east", () => {
       expect(
         getVisitedPointsPerCommand(
