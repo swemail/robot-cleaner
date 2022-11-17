@@ -1,74 +1,74 @@
 import { Command, Direction, Point } from "../types";
-import { range } from "./utils";
+import { BinaryGrid } from "./binaryGrid";
 
-// Uses a range to create an array with points for each step
-export const getVisitedPointsPerCommand = (start: Point, command: Command) => {
+const GRID_OFFSET = 100_000;
+
+const addVisitedPointsPerCommand = (
+  start: Point,
+  command: Command,
+  grid: BinaryGrid
+) => {
+  const row = start.y;
+  const column = start.x;
+  let result = 0;
   switch (command.direction) {
     case Direction.east:
-      return range(start.x, command.steps + 1).map((x) => ({ x, y: start.y }));
+      for (let index = column; index < column + command.steps + 1; index++) {
+        if (grid.getValue(row, index) === 0) {
+          grid.setValue(row, index);
+          result++;
+        }
+      }
+      start.x = start.x + command.steps;
+      return result;
 
     case Direction.west:
-      return range(start.x - command.steps, command.steps + 1)
-        .map((x) => ({
-          x,
-          y: start.y,
-        }))
-        .reverse();
+      for (let index = column; index > column - command.steps - 1; index--) {
+        if (grid.getValue(row, index) === 0) {
+          grid.setValue(row, index);
+          result++;
+        }
+      }
+      start.x = start.x - command.steps;
+      return result;
 
     case Direction.south:
-      return range(start.y, command.steps + 1).map((y) => ({ x: start.x, y }));
+      for (let index = row; index < row + command.steps + 1; index++) {
+        if (grid.getValue(index, column) === 0) {
+          grid.setValue(index, column);
+          result++;
+        }
+      }
+      start.y = start.y + command.steps;
+      return result;
 
     case Direction.north:
-      return range(start.y - command.steps, command.steps + 1)
-        .map((y) => ({
-          x: start.x,
-          y,
-        }))
-        .reverse();
+      for (let index = row; index > row - command.steps - 1; index--) {
+        if (grid.getValue(index, column) === 0) {
+          grid.setValue(index, column);
+          result++;
+        }
+      }
+      start.y = start.y - command.steps;
+      return result;
 
     default:
-      return [];
+      return result;
   }
-};
-
-// Gets all the points visisted for each command
-// and make the last point for each command the new starting point for the next command.
-//
-// Uses a string representation of each point as key in an plain Object as holder of uniqe points.
-const getAllVisitedPoints = (
-  start: Point,
-  commands: Array<Command>
-): Record<string, boolean> => {
-  const [result] = commands.reduce(
-    (acc, command) => {
-      const [visistedTotal, nextStart] = acc;
-      const visistedForCommand = getVisitedPointsPerCommand(nextStart, command);
-
-      const nextVisistedTotal = visistedForCommand.reduce((points, point) => {
-        points[`${point.x}:${point.y}`] = true; // any value would do, only need keys
-        return points;
-      }, visistedTotal);
-
-      const currentPoint =
-        visistedForCommand.length > 0
-          ? visistedForCommand[visistedForCommand.length - 1]
-          : start;
-
-      return [nextVisistedTotal, currentPoint] as [
-        Record<string, boolean>,
-        Point
-      ];
-    },
-    [{}, start] as [Record<string, boolean>, Point]
-  );
-
-  return result;
 };
 
 export const getNumberOfVisitedPoints = (
   start: Point,
   commands: Array<Command>
-) => {
-  const allPoints = getAllVisitedPoints(start, commands);
-  return Object.keys(allPoints).length;
+): number => {
+  const grid = BinaryGrid.create(200_000, 200_000);
+  start.x = start.x + GRID_OFFSET;
+  start.y = start.y + GRID_OFFSET;
+  let result = 0;
+
+  for (const command of commands) {
+    result = result + addVisitedPointsPerCommand(start, command, grid);
+  }
+
+  return result;
 };
