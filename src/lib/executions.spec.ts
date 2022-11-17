@@ -23,6 +23,17 @@ describe("executions", () => {
       ).toEqual(21);
     });
 
+    it("should handle a square the edges", () => {
+      expect(
+        getNumberOfVisitedPoints({ x: -100000, y: -100000 }, [
+          { direction: Direction.east, steps: 10 },
+          { direction: Direction.north, steps: 10 },
+          { direction: Direction.west, steps: 9 },
+          { direction: Direction.south, steps: 9 },
+        ])
+      ).toEqual(39);
+    });
+
     it("should cover a full grid", () => {
       expect(
         getNumberOfVisitedPoints({ x: 0, y: 0 }, [
@@ -58,7 +69,7 @@ describe("executions", () => {
 
       const input = JSON.parse(file.toString());
       expect(getNumberOfVisitedPoints(input.start, input.commands)).toEqual(
-        915192498
+        818378026
       );
     });
   });

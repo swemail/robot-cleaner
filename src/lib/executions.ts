@@ -20,6 +20,7 @@ const addVisitedPointsPerCommand = (
         }
       }
       start.x = start.x + command.steps;
+
       return result;
 
     case Direction.west:
@@ -33,16 +34,6 @@ const addVisitedPointsPerCommand = (
       return result;
 
     case Direction.south:
-      for (let index = row; index < row + command.steps + 1; index++) {
-        if (grid.getValue(index, column) === 0) {
-          grid.setValue(index, column);
-          result++;
-        }
-      }
-      start.y = start.y + command.steps;
-      return result;
-
-    case Direction.north:
       for (let index = row; index > row - command.steps - 1; index--) {
         if (grid.getValue(index, column) === 0) {
           grid.setValue(index, column);
@@ -50,6 +41,16 @@ const addVisitedPointsPerCommand = (
         }
       }
       start.y = start.y - command.steps;
+      return result;
+
+    case Direction.north:
+      for (let index = row; index < row + command.steps + 1; index++) {
+        if (grid.getValue(index, column) === 0) {
+          grid.setValue(index, column);
+          result++;
+        }
+      }
+      start.y = start.y + command.steps;
       return result;
 
     default:
