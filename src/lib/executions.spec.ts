@@ -23,15 +23,15 @@ describe("executions", () => {
       ).toEqual(21);
     });
 
-    it("should handle a square the edges", () => {
+    it("should handle edges of a square", () => {
       expect(
         getNumberOfVisitedPoints({ x: -100000, y: -100000 }, [
           { direction: Direction.east, steps: 10 },
           { direction: Direction.north, steps: 10 },
-          { direction: Direction.west, steps: 9 },
-          { direction: Direction.south, steps: 9 },
+          { direction: Direction.west, steps: 10 },
+          { direction: Direction.south, steps: 10 },
         ])
-      ).toEqual(39);
+      ).toEqual(40);
     });
 
     it("should cover a full grid", () => {
