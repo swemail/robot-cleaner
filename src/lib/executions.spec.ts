@@ -7,11 +7,10 @@ describe("executions", () => {
   describe("getNumberOfVisitedPoints", () => {
     it("should handle simple case of one command", () => {
       expect(
-        getNumberOfVisitedPoints({ x: 0, y: 0 }, [
-          { direction: Direction.east, steps: 10 },
+        getNumberOfVisitedPoints({ x: -100000, y: -100000 }, [
           { direction: Direction.east, steps: 10 },
         ])
-      ).toEqual(21);
+      ).toEqual(11);
     });
 
     it("should handle two commands", () => {
@@ -26,12 +25,12 @@ describe("executions", () => {
     it("should handle edges of a square", () => {
       expect(
         getNumberOfVisitedPoints({ x: -100000, y: -100000 }, [
-          { direction: Direction.east, steps: 10 },
-          { direction: Direction.north, steps: 10 },
-          { direction: Direction.west, steps: 10 },
-          { direction: Direction.south, steps: 10 },
+          { direction: Direction.east, steps: 199_999 },
+          { direction: Direction.north, steps: 199_999 },
+          { direction: Direction.west, steps: 199_999 },
+          { direction: Direction.south, steps: 199_999 },
         ])
-      ).toEqual(40);
+      ).toEqual(799996);
     });
 
     it("should cover a full grid", () => {
@@ -69,7 +68,7 @@ describe("executions", () => {
 
       const input = JSON.parse(file.toString());
       expect(getNumberOfVisitedPoints(input.start, input.commands)).toEqual(
-        818378026
+        993737501
       );
     });
   });

@@ -14,10 +14,7 @@ const addVisitedPointsPerCommand = (
   switch (command.direction) {
     case Direction.east:
       for (let index = column; index < column + command.steps + 1; index++) {
-        if (grid.getValue(row, index) === 0) {
-          grid.setValue(row, index);
-          result++;
-        }
+        result += grid.conditionallySetValue(row, index);
       }
       start.x = start.x + command.steps;
 
@@ -25,30 +22,21 @@ const addVisitedPointsPerCommand = (
 
     case Direction.west:
       for (let index = column; index > column - command.steps - 1; index--) {
-        if (grid.getValue(row, index) === 0) {
-          grid.setValue(row, index);
-          result++;
-        }
+        result += grid.conditionallySetValue(row, index);
       }
       start.x = start.x - command.steps;
       return result;
 
     case Direction.south:
       for (let index = row; index > row - command.steps - 1; index--) {
-        if (grid.getValue(index, column) === 0) {
-          grid.setValue(index, column);
-          result++;
-        }
+        result += grid.conditionallySetValue(index, column);
       }
       start.y = start.y - command.steps;
       return result;
 
     case Direction.north:
       for (let index = row; index < row + command.steps + 1; index++) {
-        if (grid.getValue(index, column) === 0) {
-          grid.setValue(index, column);
-          result++;
-        }
+        result += grid.conditionallySetValue(index, column);
       }
       start.y = start.y + command.steps;
       return result;
