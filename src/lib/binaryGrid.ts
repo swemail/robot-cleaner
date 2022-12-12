@@ -12,26 +12,31 @@ export class BinaryGrid extends Uint32Array {
     return Uint32Array;
   }
 
+  // Create an Array that can hold 200_000 * 200_000 of 0|1 values
   static create(rows: number, columns = 1): BinaryGrid {
-    const offset = getLog2(columns);
-    const length = rows << (offset - 5);
-    const grid = new this(length || 1);
+    const offset = getLog2(columns) - 5;
+    const length = rows << offset;
+    const grid = new this(length);
     grid.size = offset;
     return grid;
   }
 
   getCoordinates(row: number, column = 1): [bucket: number, position: number] {
-    const bucket = (row << (this.size - 5)) + (column >> 5);
-    return [bucket, column & 0x1f];
+    // Bucket is the part of the array for the coordinate, row * Math.pow(2, size) + (column / 32)
+    const bucket = (row << this.size) + (column >> 5);
+    // Position is the part of the Uint32 value holding 32 column values, column % 31
+    return [bucket, column & 31];
   }
 
   conditionallySetValue(row: number, column: number, value: Bit = 1): number {
     const [bucket, position] = this.getCoordinates(row, column || 0);
+    // Shift current value down to least significant bit and see if already set
     if ((this[bucket] >> position) & 1) {
       return 0;
     }
 
-    this[bucket] = (this[bucket] & ~(1 << position)) | (value << position);
+    // Set the bit at position
+    this[bucket] = this[bucket] | (value << position);
     return 1;
   }
 }
